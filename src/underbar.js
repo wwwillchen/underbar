@@ -342,11 +342,27 @@ var _ = {};
   // _.memoize should return a function that when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
-  _.memoize = function(func) {
-    var results = {};
+  _.memoize = function(inputFunc) {
+    // var results = {};
+    var storeResults;
 
-    return func;
+    return function (input) {
+      console.log("beginning:");
+      console.log(storeResults);
+      console.log("Input function called: " + inputFunc);
+      console.log("Input is: " + input);
+      storeResults = storeResults || {};
+      if(storeResults[input] === undefined) {
+        console.log("Have not defined it yet");
+        storeResults[input] = inputFunc(input);
+        console.log("Stored input: " + input + " Stored value: " + storeResults[input]);
+      }
+      console.log(storeResults);
+      return storeResults[input] || inputFunc(input);
+    };
   };
+
+  
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -451,3 +467,7 @@ var _ = {};
   };
 
 }).call(this);
+var addNum = function(a,b) {
+    return a+b;
+  }
+  _.memoize(addNum); 
